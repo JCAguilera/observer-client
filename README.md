@@ -2,7 +2,7 @@
 
 <h1 align="center">ObserverMC</h1>
 
-Observer.js is a wrapper that allows you to control multiple Minecraft Servers using Socket.io or JavaScript. It's written in TypeScript and based on the best node.js wrapper for Minecraft Servers: [scriptserver by Garrett Cox](https://github.com/garrettjoecox/scriptserver).
+ObserverMC is a wrapper that allows you to control multiple Minecraft Servers using Socket.io or JavaScript. It's written in TypeScript and based on the best node.js wrapper for Minecraft Servers: [scriptserver by Garrett Cox](https://github.com/garrettjoecox/scriptserver).
 
 Some features are:
 
@@ -17,7 +17,7 @@ Some features are:
 
 ## Get started
 
-The first thing to do is install Observer.js. It's not in NPM yet, but if it was, you could install it globally like this:
+The first thing to do is install ObserverMC:
 
     npm i -g observer
 Now just start the server using the command:
