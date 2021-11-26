@@ -1,6 +1,6 @@
 <p align="center"><a href="https://observer.jcaguilera.com" target="_blank"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/a/a9/Observer_BE2.png/revision/latest?cb=20170925224438" width="400"></a></p>
 
-<h1 align="center">Observer.js</h1>
+<h1 align="center">ObserverMC</h1>
 
 Observer.js is a wrapper that allows you to control multiple Minecraft Servers using Socket.io or JavaScript. It's written in TypeScript and based on the best node.js wrapper for Minecraft Servers: [scriptserver by Garrett Cox](https://github.com/garrettjoecox/scriptserver).
 
