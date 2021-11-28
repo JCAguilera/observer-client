@@ -1,6 +1,6 @@
 {
   "name": "observermc-client",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Client API for ObserverMC wrapper",
   "main": "dist/index.js",
   "scripts": {
