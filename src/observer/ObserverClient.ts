@@ -26,7 +26,10 @@ export class ObserverClient {
   private _socket: Socket;
   private _isReady = false;
 
-  private _events: { [key: string]: (...args: any) => any } = {};
+  private _events: { [key: string]: (...args: any) => any } = {
+    connect: (error?: string) => {},
+    disconnect: () => {},
+  };
 
   constructor(private _options: { name: string; url: string; apiKey: string }) {
     this._socket = io(_options.url, { autoConnect: false });
