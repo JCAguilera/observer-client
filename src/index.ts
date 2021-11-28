@@ -1,2 +1,5 @@
-import { ObserverClient } from "./observer/ObserverClient";
-export { ObserverClient };
+import {
+  ObserverClient,
+  Status as MinecraftServerStatus,
+} from "./observer/ObserverClient";
+export { ObserverClient, MinecraftServerStatus };
