@@ -39,10 +39,15 @@ export class ObserverClient {
     this._socket = io(_options.url, { autoConnect: false });
     // Connect event
     this._socket.on("connect", async () => {
-      const connected = await this.authenticate();
-      Logger.log(`Client authenticated as ${this._options.name}`);
+      let connected = false;
+      let error;
+      try {
+        connected = await this.authenticate();
+      } catch (error) {
+        error = error;
+      }
       this._isReady = connected;
-      this._events["connect"]();
+      this._events["connect"](error);
     });
     // Disconnect event
     this._socket.on("disconnect", () => {
