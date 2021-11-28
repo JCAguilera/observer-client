@@ -27,7 +27,7 @@ export class ObserverClient {
   private _isReady = false;
 
   private _events: { [key: string]: (...args: any) => any } = {
-    connect: (error?: string) => {},
+    connect: (error?: any) => {},
     disconnect: () => {},
   };
 
@@ -36,14 +36,14 @@ export class ObserverClient {
     // Connect event
     this._socket.on("connect", async () => {
       let connected = false;
-      let error;
+      let errorCode;
       try {
         connected = await this.authenticate();
       } catch (error) {
-        error = error;
+        errorCode = error;
       }
       this._isReady = connected;
-      this._events["connect"](error);
+      this._events["connect"](errorCode);
     });
     // Disconnect event
     this._socket.on("disconnect", () => {
@@ -129,7 +129,9 @@ export class ObserverClient {
   /** Start a server */
   start(serverName: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      await this.authenticate();
+      try {
+        await this.authenticate();
+      } catch (error) {}
       this._socket.emit(
         "start",
         serverName,
@@ -247,7 +249,7 @@ export class ObserverClient {
         this._options.name,
         this._options.apiKey,
         (success: boolean, error: string) => {
-          if (error) {
+          if (error !== "authenticated") {
             reject(error);
             return;
           }
