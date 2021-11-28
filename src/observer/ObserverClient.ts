@@ -26,14 +26,7 @@ export class ObserverClient {
   private _socket: Socket;
   private _isReady = false;
 
-  private _events: { [key: string]: (...args: any) => any } = {
-    connect: () => {
-      Logger.log("Connected to wrapper!");
-    },
-    disconnect: () => {
-      Logger.error("Disconnected from wrapper!");
-    },
-  };
+  private _events: { [key: string]: (...args: any) => any } = {};
 
   constructor(private _options: { name: string; url: string; apiKey: string }) {
     this._socket = io(_options.url, { autoConnect: false });
@@ -123,7 +116,7 @@ export class ObserverClient {
     ) => any
   ): any;
   on(event: "line", callbackFn: (line: string) => any): any;
-  on(event: "connect", callbackFn: () => any): any;
+  on(event: "connect", callbackFn: (error?: string) => any): any;
   on(event: "disconnect", callbackFn: () => any): any;
   on(event: Event, callbackFn: (...args: any) => any) {
     this._events[event] = callbackFn;
