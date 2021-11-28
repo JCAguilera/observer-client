@@ -249,7 +249,7 @@ export class ObserverClient {
         this._options.name,
         this._options.apiKey,
         (success: boolean, error: string) => {
-          if (error !== "authenticated") {
+          if (!!error && error !== "authenticated") {
             reject(error);
             return;
           }
