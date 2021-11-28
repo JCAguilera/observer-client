@@ -27,16 +27,6 @@ export class ObserverClient {
   private _isReady = false;
 
   private _events: { [key: string]: (...args: any) => any } = {
-    any: () => {},
-    line: () => {},
-    status: () => {},
-    starting: () => {},
-    online: () => {},
-    stopping: () => {},
-    offline: () => {},
-    login: () => {},
-    logout: () => {},
-    rconRunning: () => {},
     connect: () => {
       Logger.log("Connected to wrapper!");
     },
@@ -139,9 +129,17 @@ export class ObserverClient {
   start(serverName: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       await this.authenticate();
-      this._socket.emit("start", serverName, (success: boolean) => {
-        resolve(success);
-      });
+      this._socket.emit(
+        "start",
+        serverName,
+        (success: boolean, error: string) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(success);
+        }
+      );
     });
   }
 
@@ -149,9 +147,17 @@ export class ObserverClient {
   stop(serverName: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       await this.authenticate();
-      this._socket.emit("stop", serverName, (success: boolean) => {
-        resolve(success);
-      });
+      this._socket.emit(
+        "stop",
+        serverName,
+        (success: boolean, error: string) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(success);
+        }
+      );
     });
   }
 
@@ -159,9 +165,18 @@ export class ObserverClient {
   console(serverName: string, command: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       await this.authenticate();
-      this._socket.emit("console", serverName, command, (success: boolean) => {
-        resolve(success);
-      });
+      this._socket.emit(
+        "console",
+        serverName,
+        command,
+        (success: boolean, error: string) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(success);
+        }
+      );
     });
   }
 
@@ -172,7 +187,11 @@ export class ObserverClient {
       this._socket.emit(
         "onlinePlayers",
         serverName,
-        (onlinePlayers: string[]) => {
+        (onlinePlayers: string[], error: string) => {
+          if (error) {
+            reject(error);
+            return;
+          }
           resolve(onlinePlayers);
         }
       );
@@ -183,9 +202,17 @@ export class ObserverClient {
   getStatus(serverName: string): Promise<Status> {
     return new Promise(async (resolve, reject) => {
       await this.authenticate();
-      this._socket.emit("status", serverName, (status: Status) => {
-        resolve(status);
-      });
+      this._socket.emit(
+        "status",
+        serverName,
+        (status: Status, error: string) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(status);
+        }
+      );
     });
   }
 
@@ -194,15 +221,19 @@ export class ObserverClient {
     serverName: string,
     action: "list" | "add" | "remove",
     username?: string
-  ): Promise<{ res: any; error: string }> {
+  ): Promise<{ uuid: string; name: string }[] | boolean> {
     return new Promise(async (resolve, reject) => {
       await this.authenticate();
       this._socket.emit(
         "whitelist",
         serverName,
         { action, username },
-        (res: any, error: string) => {
-          resolve({ res, error });
+        (res: { uuid: string; name: string }[] | boolean, error: string) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(res);
         }
       );
     });
@@ -214,9 +245,10 @@ export class ObserverClient {
         "authenticate",
         this._options.name,
         this._options.apiKey,
-        (success: boolean) => {
-          if (!success) {
-            Logger.error("Socket authentication error!");
+        (success: boolean, error: string) => {
+          if (error) {
+            reject(error);
+            return;
           }
           resolve(success);
         }
